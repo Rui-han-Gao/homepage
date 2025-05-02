@@ -104,19 +104,19 @@
             <tr onmouseout="ASME24_stop()" onmouseover="ASME24_start()" bgcolor="#ffffd0">
               <td style="padding:16px;width:20%;vertical-align:middle" >
                 <div class="one">
-                  <div class="two" id='ASME24'><video  width="120"  muted autoplay loop>
+                  <div class="two" id='ASME24'><video  width="160"  muted autoplay loop>
                     <source src="images/ASME24.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                     </video></div>
-                    <img src='images/ASME24.jpg' width="120" height="160">
+                    <img src='images/ASME24.jpg' width="160" height="160">
                 </div>
                 <script type="text/javascript">
                   function ASME24_start() {
-                    document.getElementById('Gripper3').style.opacity = "1";
+                    document.getElementById('ASME24').style.opacity = "1";
                   }
         
                   function ASME24_stop() {
-                    document.getElementById('Gripper3').style.opacity = "0";
+                    document.getElementById('ASME24').style.opacity = "0";
                   }
                   ASME24_stop()
                 </script>
