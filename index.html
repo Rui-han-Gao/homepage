@@ -136,9 +136,25 @@
 	    </tr>
 		  
 <!------------------------------------ Leg-Arm-Coordination-in-Quadrupedal-Robotics ----------------------------------------->
-	<tr>
+	<tr onmouseout="robotics_stop()" onmouseover="robotics_start()">
               <td style="padding:16px;width:20%;vertical-align:middle" >
-                  <img src="images/robotics.mp4" alt="robotics" width="160" style="height: auto;" >
+                <div class="one">
+                  <div class="two" id='robotics'><video  width="120"  muted autoplay loop>
+                    <source src="images/robotics.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                    </video></div>
+                    <img src='images/robotics.jpg' width="120" height="160">
+                </div>
+                <script type="text/javascript">
+                  function robotics_start() {
+                    document.getElementById('robotics').style.opacity = "1";
+                  }
+        
+                  function robotics_stop() {
+                    document.getElementById('robotics').style.opacity = "0";
+                  }
+                 robotics_stop()
+                </script>
               </td>
               <td style="padding:8px;width:80%;vertical-align:middle">
                   
