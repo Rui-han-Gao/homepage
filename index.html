@@ -103,41 +103,39 @@
             </tr>
 		  
 <!------------------------------------ Quadrupedal Transformable Tracked Robot----------------------------------------->		  
-<tr onmouseout="wildlma_stop()" onmouseover="wildlma_start()">
-  <td style="padding:20px;width:25%;vertical-align:middle">
-    <div id='wildlma_anim' class='hidden'>
-      <video width="192" height="108" autoplay loop muted style="display:none">
-        <source src="images/wildlma.mp4" type="video/mp4">
-      </video>
-    </div>
-    <div id='wildlma_still'>
-      <img src="images/wildlma.jpg" style="width:192px;height:108px;">
-    </div>
-    <script type="text/javascript">
+            <tr onmouseout="wildlma_stop()" onmouseover="wildlma_start()">
+              <td style="padding:16px;width:20%;vertical-align:middle" >
+                <div class="one">
+                  <div class="two" id='wildlma'><video  width="160"  muted autoplay loop>
+                    <source src="images/wildlma.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                    </video></div>
+			 <img src='images/wildlma.jpg' width="160" height="160">
+                </div>
+                <script type="text/javascript">
                   function wildlma_start() {
-                    document.getElementById('wildlma_anim').style.display = 'inline';
-                    document.getElementById('wildlma_still').style.display = 'none';
+                    document.getElementById('wildlma').style.opacity = "1";
                   }
-
+        
                   function wildlma_stop() {
-                    document.getElementById('wildlma_anim').style.display = 'none';
-                    document.getElementById('wildlma_still').style.display = 'inline';
+                    document.getElementById('wildlma').style.opacity = "0";
                   }
                   wildlma_stop()
                 </script>
               </td>
-              <td width="75%" valign="middle">
-                <span class="papertitle">Quadrupedal Transformable Tracked Robot</span>
-                <br>
-                Ri-Zhao Qiu*,Yuchen Song*, Xuanbin Peng*, Sai Aneesh Suryadevara, Ge Yang, Minghuan Liu, <strong>Mazeyu Ji</strong>, Chengzhe Jia, Ruihan Yang, Xueyan Zou, Xiaolong Wang
-                <br>
-                <em>ICRA</em>, 2025
-                <br>
-                <a href="https://wildlma.github.io/">project website</a> /
-                <a href="https://arxiv.org/abs/2411.15131">paper</a>
+              <td style="padding:8px;width:80%;vertical-align:middle">
+                  
+                  <span class="papertitle">Quadrupedal Transformable Tracked Robot</span>
+                  
+                  <p>
+                      This project proposed a design transitioning from O-shaped wheels to an ∞-shaped caterpillar track, allowing the robot to carry payloads smoothly on flat surfaces and traverse obstacles on rough terrain.
+                  </p>    
+                    <a href="data/wildlma.pdf">report</a> &nbsp;/&nbsp;
+        
+       <a href="data/wildlma.mp4">video</a> &nbsp;/&nbsp;
+        <p></p>   
               </td>
-            </tr>
-
+	    </tr>
    <!------------------------------------ ASME SMRDC 2024 ----------------------------------------->
             
             <tr onmouseout="ASME24_stop()" onmouseover="ASME24_start()">
