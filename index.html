@@ -103,15 +103,17 @@
             </tr>
 		  
 <!------------------------------------ Quadrupedal Transformable Tracked Robot----------------------------------------->		  
-<tr onmouseout=wildlma_stop() onmouseover=wildlma_start()>
-              <td style="padding:20px;width:25%;vertical-align:middle">
-                <div id='wildlma_anim' class='hidden'>
-                  <img src="images/wildlma.mp4" style="width:192px;height:108px;">
-                </div>
-                <div id='wildlma_still'>
-                  <img src="images/wildlma.jpg" style="width:192px;height:108px;">
-                </div>
-                <script type="text/javascript">
+<tr onmouseout="wildlma_stop()" onmouseover="wildlma_start()">
+  <td style="padding:20px;width:25%;vertical-align:middle">
+    <div id='wildlma_anim' class='hidden'>
+      <video width="192" height="108" autoplay loop muted style="display:none">
+        <source src="images/wildlma.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div id='wildlma_still'>
+      <img src="images/wildlma.jpg" style="width:192px;height:108px;">
+    </div>
+    <script type="text/javascript">
                   function wildlma_start() {
                     document.getElementById('wildlma_anim').style.display = 'inline';
                     document.getElementById('wildlma_still').style.display = 'none';
