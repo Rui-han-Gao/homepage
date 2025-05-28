@@ -42,90 +42,14 @@
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
               <tr>
               <td style="padding:8px;width:100%;vertical-align:middle">
-	<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>News Section</title>
-  <style>
-    .news-slider {
-      position: relative;
-      max-width: 100%;
-      margin: 0 auto;
-      display: flex;
-      gap: 15px;
-    }
+	<h1 id="news"></h1>
 
-    .news-container {
-      flex-grow: 1;
-      overflow: hidden;
-      max-height: 150px;
-      position: relative;
-    }
-
-    #news-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      transform: translateY(0);
-      transition: transform 0.2s ease;
-    }
-
-    #news-list li {
-      margin-bottom: 10px;
-      padding: 10px;
-      background-color: rgba(240, 240, 240, 0.1);
-      border-radius: 4px;
-    }
-
-    .slider-container {
-      width: 20px;
-      min-height: 150px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .slider-track {
-      height: 100%;
-      width: 6px;
-      background-color: #e0e0e0;
-      border-radius: 3px;
-      position: relative;
-    }
-
-    .slider-thumb {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 10px;
-      height: 30px;
-      background-color: #9e9e9e;
-      border-radius: 3px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      transition: top 0.1s ease;
-    }
-
-    .slider-thumb:hover {
-      background-color: #7e7e7e;
-    }
-  </style>
-</head>
-<body>
-
-<h1 id="news"></h1>
 <h2 style="margin: 0px 0px 0px;">News</h2>
 
 <div class="news-slider">
   <div class="news-container">
     <ul id="news-list">
-      <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at <span style="color:#f59ab2"><a href="https://galaxea-ai.com/cn" target="_blank">GalaXea AI</a></span>.</li>
+      <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at <span style="color:#f59ab2"><a href="https://galaxea-ai.com/cn">GalaXea AI</a></span>.</li>
       <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
       <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research, Tsinghua University for manipulation research.</li>
     </ul>
@@ -137,6 +61,79 @@
     </div>
   </div>
 </div>
+
+<style>
+  .news-slider {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    gap: 15px;
+  }
+
+  .news-container {
+    flex-grow: 1;
+    overflow: hidden;
+    max-height: 150px;
+    position: relative;
+  }
+
+  #news-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Only applied dynamically when needed */
+  #news-list.scrolling {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: transform 0.2s ease;
+  }
+
+  #news-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(240, 240, 240, 0.1);
+    border-radius: 4px;
+  }
+
+  .slider-container {
+    width: 20px;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slider-track {
+    height: 100%;
+    width: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .slider-thumb {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 30px;
+    background-color: #9e9e9e;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: top 0.1s ease;
+  }
+
+  .slider-thumb:hover {
+    background-color: #7e7e7e;
+  }
+</style>
 
 <script>
   window.addEventListener('load', function () {
@@ -154,6 +151,9 @@
       return;
     }
 
+    // Enable scrolling class only when needed
+    newsList.classList.add('scrolling');
+
     let currentPosition = 0;
     let isDragging = false;
 
@@ -166,7 +166,7 @@
       sliderThumb.style.top = `${thumbPosition}px`;
     }
 
-    // Mouse dragging
+    // Mouse drag support
     sliderThumb.addEventListener('mousedown', function (e) {
       isDragging = true;
       e.preventDefault();
@@ -183,7 +183,7 @@
 
     document.addEventListener('mouseup', () => isDragging = false);
 
-    // Click on track to jump
+    // Track click to jump
     sliderTrack.addEventListener('click', function (e) {
       if (e.target === sliderThumb) return;
       const trackRect = sliderTrack.getBoundingClientRect();
@@ -217,14 +217,9 @@
 
     document.addEventListener('touchend', () => isDragging = false);
 
-    // Initial position
     updatePosition(0);
   });
 </script>
-
-</body>
-</html>
-
 		      <br><br>
                 <h2>Research</h2>
                 <p>
