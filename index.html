@@ -43,7 +43,7 @@
               <tr>
               <td style="padding:8px;width:100%;vertical-align:middle">
 	<h1 id="news"></h1>
-<h2 style="margin: 0px 0px 0px;">News</h2>
+   <h2 style="margin: 0px 0px 0px;">News</h2>
 <div class="news-slider">
   <div class="news-container">
     <ul id="news-list">
@@ -52,7 +52,7 @@
       <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research,Tsinghua University for manipulation research.</li>
     </ul>
   </div>
-
+  
   <div class="slider-container">
     <div class="slider-track">
       <div class="slider-thumb" id="slider-thumb"></div>
@@ -62,17 +62,17 @@
 
 <style>
   .news-slider {
-    position: relative;
-    max-width: 100%;
-    margin: 0 auto;
     display: flex;
     gap: 15px;
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
   }
 
   .news-container {
     flex-grow: 1;
     overflow: hidden;
-    max-height: 150px;
+    max-height: 300px;
     position: relative;
   }
 
@@ -96,7 +96,7 @@
 
   .slider-container {
     width: 20px;
-    min-height: 150px;
+    min-height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,87 +128,86 @@
     background-color: #7e7e7e;
   }
 </style>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const newsList = document.getElementById('news-list');
-  const newsContainer = document.querySelector('.news-container');
-  const sliderThumb = document.getElementById('slider-thumb');
-  const sliderTrack = document.querySelector('.slider-track');
 
-  const listHeight = newsList.scrollHeight;
-  const containerHeight = newsContainer.clientHeight;
-  const scrollableDistance = listHeight - containerHeight;
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const newsList = document.getElementById('news-list');
+    const newsContainer = document.querySelector('.news-container');
+    const sliderThumb = document.getElementById('slider-thumb');
+    const sliderTrack = document.querySelector('.slider-track');
+    const sliderContainer = document.querySelector('.slider-container');
 
-  // 只要内容溢出才显示滑块
-  if (scrollableDistance <= 0) {
-    document.querySelector('.slider-container').style.display = 'none';
-    return;
-  }
+    let currentPosition = 0;
+    let scrollableDistance = 0;
+    let isDragging = false;
 
-  // 更新滑块的位置
-  function updateThumbPosition() {
-    const maxScroll = newsContainer.scrollHeight - newsContainer.clientHeight;
-    const maxThumbMove = sliderTrack.clientHeight - sliderThumb.clientHeight;
-    const ratio = newsContainer.scrollTop / maxScroll;
-    sliderThumb.style.top = `${ratio * maxThumbMove}px`;
-  }
+    function recalculate() {
+      const listHeight = newsList.scrollHeight;
+      const containerHeight = newsContainer.clientHeight;
+      scrollableDistance = listHeight - containerHeight;
 
-  // 滚动时更新滑块位置
-  newsContainer.addEventListener('scroll', updateThumbPosition);
+      // 隐藏滑块（如果内容不超出）
+      if (scrollableDistance <= 0) {
+        sliderContainer.style.display = 'none';
+      } else {
+        sliderContainer.style.display = 'flex';
+        updatePosition(currentPosition);
+      }
+    }
 
-  // 拖动滑块控制滚动内容
-  let isDragging = false;
-  let dragOffsetY = 0;
+    function updatePosition(pos) {
+      pos = Math.max(0, Math.min(pos, scrollableDistance));
+      currentPosition = pos;
+      newsList.style.transform = `translateY(-${pos}px)`;
 
-  sliderThumb.addEventListener('mousedown', function(e) {
-    isDragging = true;
-    const thumbRect = sliderThumb.getBoundingClientRect();
-    dragOffsetY = e.clientY - thumbRect.top;
-    e.preventDefault();
+      const thumbTrackHeight = sliderTrack.clientHeight - sliderThumb.clientHeight;
+      const thumbTop = (pos / scrollableDistance) * thumbTrackHeight;
+      sliderThumb.style.top = `${thumbTop}px`;
+    }
+
+    // 拖动滑块
+    sliderThumb.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      const trackRect = sliderTrack.getBoundingClientRect();
+      const thumbHeight = sliderThumb.clientHeight;
+      let y = e.clientY - trackRect.top;
+      y = Math.max(thumbHeight / 2, Math.min(y, trackRect.height - thumbHeight / 2));
+      const ratio = (y - thumbHeight / 2) / (trackRect.height - thumbHeight);
+      updatePosition(ratio * scrollableDistance);
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+
+    // 鼠标滚轮支持
+    newsContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      updatePosition(currentPosition + (e.deltaY > 0 ? 40 : -40));
+    });
+
+    // 点击滑道跳转
+    sliderTrack.addEventListener('click', (e) => {
+      if (e.target === sliderThumb) return;
+
+      const trackRect = sliderTrack.getBoundingClientRect();
+      const thumbHeight = sliderThumb.clientHeight;
+      let y = e.clientY - trackRect.top;
+      y = Math.max(thumbHeight / 2, Math.min(y, trackRect.height - thumbHeight / 2));
+      const ratio = (y - thumbHeight / 2) / (trackRect.height - thumbHeight);
+      updatePosition(ratio * scrollableDistance);
+    });
+
+    // 初始化并监听尺寸变化
+    setTimeout(recalculate, 0);
+    window.addEventListener('resize', recalculate);
   });
-
-  document.addEventListener('mousemove', function(e) {
-    if (!isDragging) return;
-
-    const trackRect = sliderTrack.getBoundingClientRect();
-    const thumbHeight = sliderThumb.clientHeight;
-    let relativeY = e.clientY - trackRect.top - dragOffsetY;
-
-    const maxThumbMove = sliderTrack.clientHeight - thumbHeight;
-    relativeY = Math.max(0, Math.min(relativeY, maxThumbMove));
-
-    const scrollRatio = relativeY / maxThumbMove;
-    const maxScroll = newsContainer.scrollHeight - newsContainer.clientHeight;
-    newsContainer.scrollTop = scrollRatio * maxScroll;
-  });
-
-  document.addEventListener('mouseup', function() {
-    isDragging = false;
-  });
-
-  // 点击滑道跳转
-  sliderTrack.addEventListener('click', function(e) {
-    if (e.target === sliderThumb) return;
-
-    const trackRect = sliderTrack.getBoundingClientRect();
-    const thumbHeight = sliderThumb.clientHeight;
-    let relativeY = e.clientY - trackRect.top - thumbHeight / 2;
-
-    const maxThumbMove = sliderTrack.clientHeight - thumbHeight;
-    relativeY = Math.max(0, Math.min(relativeY, maxThumbMove));
-
-    const scrollRatio = relativeY / maxThumbMove;
-    const maxScroll = newsContainer.scrollHeight - newsContainer.clientHeight;
-    newsContainer.scrollTop = scrollRatio * maxScroll;
-  });
-
-  // 初始化滑块
-  updateThumbPosition();
-
-  // 监听窗口变化时更新滑块位置
-  window.addEventListener('resize', updateThumbPosition);
-});
 </script>
+
 		      <br><br>
                 <h2>Research</h2>
                 <p>
