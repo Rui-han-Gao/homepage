@@ -128,9 +128,8 @@
     background-color: #7e7e7e;
   }
 </style>
-
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  window.addEventListener('load', function() {
     const newsList = document.getElementById('news-list');
     const newsContainer = document.querySelector('.news-container');
     const sliderThumb = document.getElementById('slider-thumb');
@@ -158,6 +157,7 @@
       sliderThumb.style.top = `${thumbPosition}px`;
     }
 
+    // 以下代码保持不变...
     sliderThumb.addEventListener('mousedown', function(e) {
       isDragging = true;
       e.preventDefault();
@@ -236,6 +236,7 @@
     updatePosition(0);
   });
 </script>
+
 		      <br><br>
                 <h2>Research</h2>
                 <p>
