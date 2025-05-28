@@ -49,10 +49,10 @@
     <ul id="news-list">
       <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at GalaXea AI.</li>
       <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
-      <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research,Tsinghua University for manipulation research.</li>
+      <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research, Tsinghua University for manipulation research.</li>
     </ul>
   </div>
-  
+
   <div class="slider-container">
     <div class="slider-track">
       <div class="slider-thumb" id="slider-thumb"></div>
@@ -68,14 +68,14 @@
     display: flex;
     gap: 15px;
   }
-  
+
   .news-container {
     flex-grow: 1;
     overflow: hidden;
-    max-height: 150px;
+    height: 150px; /* 强制固定高度，避免初始化高度为0 */
     position: relative;
   }
-  
+
   #news-list {
     list-style-type: none;
     padding: 0;
@@ -86,14 +86,14 @@
     width: 100%;
     transition: transform 0.2s ease;
   }
-  
+
   #news-list li {
     margin-bottom: 10px;
     padding: 10px;
     background-color: rgba(240, 240, 240, 0.1);
     border-radius: 4px;
   }
-  
+
   .slider-container {
     width: 20px;
     min-height: 150px;
@@ -101,7 +101,7 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .slider-track {
     height: 100%;
     width: 6px;
@@ -109,7 +109,7 @@
     border-radius: 3px;
     position: relative;
   }
-  
+
   .slider-thumb {
     position: absolute;
     top: 0;
@@ -123,135 +123,119 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: top 0.1s ease;
   }
-  
+
   .slider-thumb:hover {
     background-color: #7e7e7e;
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  window.onload = function () {
     const newsList = document.getElementById('news-list');
     const newsContainer = document.querySelector('.news-container');
     const sliderThumb = document.getElementById('slider-thumb');
     const sliderTrack = document.querySelector('.slider-track');
-    
+    const sliderContainer = document.querySelector('.slider-container');
+
     const listHeight = newsList.scrollHeight;
     const containerHeight = newsContainer.clientHeight;
     const scrollableDistance = listHeight - containerHeight;
-    
-    // Only show slider if content overflows
+
     if (scrollableDistance <= 0) {
-      document.querySelector('.slider-container').style.display = 'none';
+      sliderContainer.style.display = 'none';
       return;
     }
-    
-    // Initial position
+
     let currentPosition = 0;
     let isDragging = false;
-    
-    // Function to update the news list position
+
     function updatePosition(position) {
-      // Ensure position is within bounds
       position = Math.max(0, Math.min(position, scrollableDistance));
       currentPosition = position;
-      
-      // Update news list transform
+
       newsList.style.transform = `translateY(-${position}px)`;
-      
-      // Update slider thumb position
+
       const thumbPosition = (position / scrollableDistance) * (sliderTrack.clientHeight - sliderThumb.clientHeight);
       sliderThumb.style.top = `${thumbPosition}px`;
     }
-    
-    // Mouse events for dragging the slider
-    sliderThumb.addEventListener('mousedown', function(e) {
+
+    sliderThumb.addEventListener('mousedown', function (e) {
       isDragging = true;
-      e.preventDefault(); // Prevent text selection
+      e.preventDefault();
     });
-    
-    document.addEventListener('mousemove', function(e) {
+
+    document.addEventListener('mousemove', function (e) {
       if (!isDragging) return;
-      
+
       const trackRect = sliderTrack.getBoundingClientRect();
       const thumbHeight = sliderThumb.clientHeight;
       const trackHeight = trackRect.height;
-      
-      // Calculate position relative to the track
+
       let relativeY = e.clientY - trackRect.top;
       relativeY = Math.max(thumbHeight / 2, Math.min(relativeY, trackHeight - thumbHeight / 2));
-      
-      // Calculate the scroll position
+
       const scrollRatio = (relativeY - thumbHeight / 2) / (trackHeight - thumbHeight);
       const scrollPosition = scrollRatio * scrollableDistance;
-      
+
       updatePosition(scrollPosition);
     });
-    
-    document.addEventListener('mouseup', function() {
+
+    document.addEventListener('mouseup', function () {
       isDragging = false;
     });
-    
-    // Track click to jump to position
-    sliderTrack.addEventListener('click', function(e) {
+
+    sliderTrack.addEventListener('click', function (e) {
       if (e.target === sliderThumb) return;
-      
+
       const trackRect = sliderTrack.getBoundingClientRect();
       const thumbHeight = sliderThumb.clientHeight;
       const trackHeight = trackRect.height;
-      
-      // Calculate position relative to the track
+
       let relativeY = e.clientY - trackRect.top;
       relativeY = Math.max(thumbHeight / 2, Math.min(relativeY, trackHeight - thumbHeight / 2));
-      
-      // Calculate the scroll position
+
       const scrollRatio = (relativeY - thumbHeight / 2) / (trackHeight - thumbHeight);
       const scrollPosition = scrollRatio * scrollableDistance;
-      
+
       updatePosition(scrollPosition);
     });
-    
-    // Mouse wheel scrolling in the news container
-    newsContainer.addEventListener('wheel', function(e) {
+
+    newsContainer.addEventListener('wheel', function (e) {
       e.preventDefault();
       const delta = e.deltaY > 0 ? 30 : -30;
       updatePosition(currentPosition + delta);
     });
-    
-    // Touch events for mobile
+
     let startY;
-    
-    sliderThumb.addEventListener('touchstart', function(e) {
+
+    sliderThumb.addEventListener('touchstart', function (e) {
       isDragging = true;
       startY = e.touches[0].clientY;
       e.preventDefault();
     });
-    
-    document.addEventListener('touchmove', function(e) {
+
+    document.addEventListener('touchmove', function (e) {
       if (!isDragging) return;
-      
+
       const trackRect = sliderTrack.getBoundingClientRect();
       const thumbHeight = sliderThumb.clientHeight;
       const trackHeight = trackRect.height;
-      
-      // Calculate position relative to the track
+
       let relativeY = e.touches[0].clientY - trackRect.top;
       relativeY = Math.max(thumbHeight / 2, Math.min(relativeY, trackHeight - thumbHeight / 2));
-      
-      // Calculate the scroll position
+
       const scrollRatio = (relativeY - thumbHeight / 2) / (trackHeight - thumbHeight);
       const scrollPosition = scrollRatio * scrollableDistance;
-      
+
       updatePosition(scrollPosition);
     });
-    
-    document.addEventListener('touchend', function() {
+
+    document.addEventListener('touchend', function () {
       isDragging = false;
     });
-    
-    // Initialize the thumb position
+
     updatePosition(0);
-  });
+  };
 </script>
 		      <br><br>
                 <h2>Research</h2>
