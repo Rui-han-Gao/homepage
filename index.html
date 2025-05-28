@@ -128,31 +128,24 @@
     background-color: #7e7e7e;
   }
 </style>
-<script>
+     <script>
   function initializeNewsScroll() {
     const newsList = document.getElementById('news-list');
     const newsContainer = document.querySelector('.news-container');
     const sliderThumb = document.getElementById('slider-thumb');
     const sliderTrack = document.querySelector('.slider-track');
 
-    let listHeight = newsList.scrollHeight;
-    let containerHeight = newsContainer.clientHeight;
-
-    // 如果渲染未完成，scrollHeight 可能为 0
-    if (listHeight === 0 || containerHeight === 0) {
-      // 等待下一帧重试
-      requestAnimationFrame(initializeNewsScroll);
-      return;
-    }
-
+    const listHeight = newsList.scrollHeight;
+    const containerHeight = newsContainer.clientHeight;
     const scrollableDistance = listHeight - containerHeight;
 
-    // 如果内容不够滚动，就隐藏滑动条
+    // 如果内容无法滚动，隐藏滑动条
     if (scrollableDistance <= 0) {
       document.querySelector('.slider-container').style.display = 'none';
       return;
     }
 
+    // 初始化滚动
     let currentPosition = 0;
     let isDragging = false;
 
@@ -166,7 +159,7 @@
       sliderThumb.style.top = `${thumbPosition}px`;
     }
 
-    // 事件监听（拖拽、点击、滚轮等）
+    // 鼠标拖动
     sliderThumb.addEventListener('mousedown', e => {
       isDragging = true;
       e.preventDefault();
@@ -192,6 +185,7 @@
       isDragging = false;
     });
 
+    // 点击轨道
     sliderTrack.addEventListener('click', e => {
       if (e.target === sliderThumb) return;
 
@@ -208,12 +202,14 @@
       updatePosition(scrollPosition);
     });
 
+    // 滚轮
     newsContainer.addEventListener('wheel', e => {
       e.preventDefault();
       const delta = e.deltaY > 0 ? 30 : -30;
       updatePosition(currentPosition + delta);
     });
 
+    // 触摸滑动
     sliderThumb.addEventListener('touchstart', e => {
       isDragging = true;
       e.preventDefault();
@@ -239,15 +235,47 @@
       isDragging = false;
     });
 
-    // 初始位置
+    // 初始化位置
     updatePosition(0);
   }
 
+  // 等待内容加载并正确渲染后再初始化
+  function waitForContentRender(maxAttempts = 10) {
+    let attempts = 0;
+
+    function check() {
+      const newsList = document.getElementById('news-list');
+      const newsContainer = document.querySelector('.news-container');
+
+      if (!newsList || !newsContainer) {
+        if (++attempts < maxAttempts) {
+          requestAnimationFrame(check);
+        }
+        return;
+      }
+
+      const listHeight = newsList.scrollHeight;
+      const containerHeight = newsContainer.clientHeight;
+
+      // 内容是否完全渲染
+      if (listHeight > containerHeight) {
+        initializeNewsScroll();
+      } else {
+        if (++attempts < maxAttempts) {
+          requestAnimationFrame(check);
+        }
+      }
+    }
+
+    requestAnimationFrame(check);
+  }
+
+  // 页面加载后执行
   window.addEventListener('load', () => {
-    // 使用 requestAnimationFrame 等待渲染完成后执行初始化
-    requestAnimationFrame(initializeNewsScroll);
+    waitForContentRender();
   });
 </script>
+
 		      <br><br>
                 <h2>Research</h2>
                 <p>
