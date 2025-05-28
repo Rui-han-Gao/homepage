@@ -48,7 +48,7 @@
 
 <div class="news-slider">
   <div class="news-container">
-    <ul id="news-list">
+    <ul id="news-list" class="hidden-init">
       <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at <span style="color:#f59ab2"><a href="https://galaxea-ai.com/cn">GalaXea AI</a></span>.</li>
       <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
       <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research, Tsinghua University for manipulation research.</li>
@@ -87,8 +87,7 @@
     left: 0;
     width: 100%;
     transform: translateY(0);
-    transition: transform 0.2s ease, opacity 0.1s ease;
-    opacity: 0; /* 🔧 初始隐藏内容 */
+    transition: transform 0.2s ease;
   }
 
   #news-list li {
@@ -131,6 +130,13 @@
   .slider-thumb:hover {
     background-color: #7e7e7e;
   }
+
+  /* ✅ 防止闪现：初始完全隐藏 news 列表 */
+  .hidden-init {
+    visibility: hidden;
+    position: absolute;
+    top: -9999px;
+  }
 </style>
 
 <script>
@@ -147,7 +153,7 @@
 
       if (scrollableDistance <= 0) {
         document.querySelector('.slider-container').style.display = 'none';
-        newsList.style.opacity = '1'; // 即使无滚动，也显示内容
+        newsList.classList.remove('hidden-init'); // 显示内容
         return;
       }
 
@@ -216,8 +222,8 @@
 
       // 初始化位置 & 显示内容
       updatePosition(0);
-      newsList.style.opacity = '1'; // ✅ 显示内容
-    }, 100);
+      newsList.classList.remove('hidden-init'); // ✅ 移除隐藏类，显示内容
+    }, 100); // 延迟确保 DOM 完全渲染
   });
 </script>
 
