@@ -82,10 +82,6 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-  }
-
-  /* Only applied dynamically when needed */
-  #news-list.scrolling {
     position: absolute;
     top: 0;
     left: 0;
@@ -116,7 +112,6 @@
     position: relative;
   }
 
-  /* Initially, hide the slider thumb */
   .slider-thumb {
     position: absolute;
     top: 0;
@@ -129,12 +124,7 @@
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: top 0.1s ease, opacity 0.3s ease;
-    opacity: 0; /* Initially hidden */
-  }
-
-  /* Show the slider thumb when it's needed */
-  .slider-thumb.show {
-    opacity: 1; /* Fade in */
+    opacity: 1; /* Ensure the thumb is always visible */
   }
 
   .slider-thumb:hover {
@@ -153,16 +143,12 @@
     const containerHeight = newsContainer.clientHeight;
     const scrollableDistance = Math.max(0, listHeight - containerHeight);
 
-    if (scrollableDistance <= 0) {
-      document.querySelector('.slider-container').style.display = 'none';
-      return;
-    }
-
-    // Enable scrolling class only when needed
-    newsList.classList.add('scrolling');
-
     let currentPosition = 0;
 
+    // Show the slider thumb even if content is short
+    sliderThumb.style.opacity = 1;
+
+    // Function to update the position of the list and the slider thumb
     function updatePosition(position) {
       position = Math.max(0, Math.min(position, scrollableDistance));
       currentPosition = position;
@@ -172,26 +158,36 @@
       sliderThumb.style.top = `${thumbPosition}px`;
     }
 
-    // Show the slider thumb when needed
-    sliderThumb.classList.add('show');
+    // If there's no scrollable content, still allow interaction
+    function allowScrolling() {
+      // Force show the slider and enable interaction even for short content
+      if (scrollableDistance === 0) {
+        newsContainer.style.overflowY = 'scroll'; // Force scroll bar visible
+      } else {
+        newsContainer.style.overflowY = 'hidden'; // Hide scroll bar if content is scrollable
+      }
+    }
+
+    allowScrolling();
 
     // Mouse drag support
+    let isDragging = false;
     sliderThumb.addEventListener('mousedown', function (e) {
-      let isDragging = true;
+      isDragging = true;
       e.preventDefault();
+    });
 
-      document.addEventListener('mousemove', function (e) {
-        if (!isDragging) return;
-        const trackRect = sliderTrack.getBoundingClientRect();
-        const thumbHeight = sliderThumb.clientHeight;
-        const relativeY = Math.min(Math.max(e.clientY - trackRect.top, thumbHeight / 2), trackRect.height - thumbHeight / 2);
-        const scrollRatio = (relativeY - thumbHeight / 2) / (trackRect.height - thumbHeight);
-        updatePosition(scrollRatio * scrollableDistance);
-      });
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      const trackRect = sliderTrack.getBoundingClientRect();
+      const thumbHeight = sliderThumb.clientHeight;
+      const relativeY = Math.min(Math.max(e.clientY - trackRect.top, thumbHeight / 2), trackRect.height - thumbHeight / 2);
+      const scrollRatio = (relativeY - thumbHeight / 2) / (trackRect.height - thumbHeight);
+      updatePosition(scrollRatio * scrollableDistance);
+    });
 
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-      });
+    document.addEventListener('mouseup', function () {
+      isDragging = false;
     });
 
     // Track click to jump
@@ -213,7 +209,7 @@
 
     // Touch support
     sliderThumb.addEventListener('touchstart', e => {
-      let isDragging = true;
+      isDragging = true;
       e.preventDefault();
     });
 
@@ -226,10 +222,11 @@
       updatePosition(scrollRatio * scrollableDistance);
     });
 
-    document.addEventListener('touchend', () => {
+    document.addEventListener('touchend', function () {
       isDragging = false;
     });
 
+    // Initially set the scroll position to 0
     updatePosition(0);
   });
 </script>
