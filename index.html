@@ -42,20 +42,6 @@
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
               <tr>
               <td style="padding:8px;width:100%;vertical-align:middle">
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded - initializing news slider');
-  const newsList = document.getElementById('news-list');
-  const newsContainer = document.querySelector('.news-container');
-  
-  if (!newsList || !newsContainer) {
-    console.error('Required elements not found!');
-    return;
-  }
-
-  console.log('Initial dimensions:', {
-    listScrollHeight: newsList.scrollHeight,
-    containerHeight: newsContainer.clientHeight
-  });
 	<h1 id="news"></h1>
 <h2 style="margin: 0px 0px 0px;">News</h2>
 <div class="news-slider">
@@ -267,7 +253,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updatePosition(0);
   });
 </script>
-		      });
 		      <br><br>
                 <h2>Research</h2>
                 <p>
