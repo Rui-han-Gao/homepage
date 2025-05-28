@@ -145,7 +145,7 @@
 
     let currentPosition = 0;
 
-    // Show the slider thumb even if content is short
+    // Always show the slider thumb, even if the content is short
     sliderThumb.style.opacity = 1;
 
     // Function to update the position of the list and the slider thumb
@@ -158,13 +158,14 @@
       sliderThumb.style.top = `${thumbPosition}px`;
     }
 
-    // If there's no scrollable content, still allow interaction
+    // Allow scrolling interaction even if content is not scrollable
     function allowScrolling() {
-      // Force show the slider and enable interaction even for short content
       if (scrollableDistance === 0) {
-        newsContainer.style.overflowY = 'scroll'; // Force scroll bar visible
+        // Force scroll interaction when content is short
+        newsContainer.style.overflowY = 'scroll'; // Always show scroll bar
+        updatePosition(0); // Ensure the thumb is at the top
       } else {
-        newsContainer.style.overflowY = 'hidden'; // Hide scroll bar if content is scrollable
+        newsContainer.style.overflowY = 'hidden'; // Hide the scroll bar when content overflows
       }
     }
 
@@ -230,6 +231,7 @@
     updatePosition(0);
   });
 </script>
+
 		      <br><br>
                 <h2>Research</h2>
                 <p>
