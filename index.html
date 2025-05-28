@@ -52,7 +52,6 @@
       <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research, Tsinghua University for manipulation research.</li>
     </ul>
   </div>
-
   <div class="slider-container">
     <div class="slider-track">
       <div class="slider-thumb" id="slider-thumb"></div>
@@ -72,7 +71,7 @@
   .news-container {
     flex-grow: 1;
     overflow: hidden;
-    height: 150px; /* 强制固定高度，避免初始化高度为0 */
+    height: 150px; /* 明确设置高度 */
     position: relative;
   }
 
@@ -130,19 +129,18 @@
 </style>
 
 <script>
-  window.onload = function () {
+  function initNewsSlider() {
     const newsList = document.getElementById('news-list');
     const newsContainer = document.querySelector('.news-container');
     const sliderThumb = document.getElementById('slider-thumb');
     const sliderTrack = document.querySelector('.slider-track');
-    const sliderContainer = document.querySelector('.slider-container');
 
     const listHeight = newsList.scrollHeight;
     const containerHeight = newsContainer.clientHeight;
     const scrollableDistance = listHeight - containerHeight;
 
     if (scrollableDistance <= 0) {
-      sliderContainer.style.display = 'none';
+      document.querySelector('.slider-container').style.display = 'none';
       return;
     }
 
@@ -152,7 +150,6 @@
     function updatePosition(position) {
       position = Math.max(0, Math.min(position, scrollableDistance));
       currentPosition = position;
-
       newsList.style.transform = `translateY(-${position}px)`;
 
       const thumbPosition = (position / scrollableDistance) * (sliderTrack.clientHeight - sliderThumb.clientHeight);
@@ -235,6 +232,11 @@
     });
 
     updatePosition(0);
+  }
+
+  // 改为 window.onload，确保一切加载完成再执行
+  window.onload = function () {
+    initNewsSlider();
   };
 </script>
 		      <br><br>
