@@ -42,8 +42,7 @@
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
               <tr>
               <td style="padding:8px;width:100%;vertical-align:middle">
-	
-    <h1 id="news"></h1>
+	<h1 id="news"></h1>
 
 <h2 style="margin: 0px 0px 0px;">News</h2>
 
@@ -77,7 +76,6 @@
     overflow: hidden;
     max-height: 150px;
     position: relative;
-    visibility: hidden; /* 💡 初始隐藏 */
   }
 
   #news-list {
@@ -89,7 +87,8 @@
     left: 0;
     width: 100%;
     transform: translateY(0);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.1s ease;
+    opacity: 0; /* 🔧 初始隐藏内容 */
   }
 
   #news-list li {
@@ -148,7 +147,7 @@
 
       if (scrollableDistance <= 0) {
         document.querySelector('.slider-container').style.display = 'none';
-        newsContainer.style.visibility = 'visible'; // 👈 仍然需要显示内容
+        newsList.style.opacity = '1'; // 即使无滚动，也显示内容
         return;
       }
 
@@ -215,10 +214,10 @@
 
       document.addEventListener('touchend', () => isDragging = false);
 
-      // 初始化位置
+      // 初始化位置 & 显示内容
       updatePosition(0);
-      newsContainer.style.visibility = 'visible'; // ✅ 显示内容
-    }, 100); // 可微调延迟，确保 DOM 渲染完成
+      newsList.style.opacity = '1'; // ✅ 显示内容
+    }, 100);
   });
 </script>
 
