@@ -50,12 +50,12 @@
 <div class="news-slider">
   <div class="news-container">
     <ul id="news-list">
-      <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at <span style="color:#f59ab2"><a href="https://galaxea-ai.com/cn">GalaXea AI</a></span> .</li>
+      <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at <span style="color:#f59ab2"><a href="https://galaxea-ai.com/cn">GalaXea AI</a></span>.</li>
       <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
-      <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research,Tsinghua University for manipulation research.</li>
+      <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research, Tsinghua University for manipulation research.</li>
     </ul>
   </div>
-  
+
   <div class="slider-container">
     <div class="slider-track">
       <div class="slider-thumb" id="slider-thumb"></div>
@@ -77,6 +77,7 @@
     overflow: hidden;
     max-height: 150px;
     position: relative;
+    visibility: hidden; /* 💡 初始隐藏 */
   }
 
   #news-list {
@@ -87,7 +88,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    transform: translateY(0); /* Initial visible */
+    transform: translateY(0);
     transition: transform 0.2s ease;
   }
 
@@ -134,21 +135,20 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const newsList = document.getElementById('news-list');
     const newsContainer = document.querySelector('.news-container');
     const sliderThumb = document.getElementById('slider-thumb');
     const sliderTrack = document.querySelector('.slider-track');
 
-    // 延迟确保DOM渲染完成
     setTimeout(() => {
       const listHeight = newsList.scrollHeight;
       const containerHeight = newsContainer.clientHeight;
       const scrollableDistance = Math.max(0, listHeight - containerHeight);
 
-      // 仅当需要滚动时显示滑块
       if (scrollableDistance <= 0) {
         document.querySelector('.slider-container').style.display = 'none';
+        newsContainer.style.visibility = 'visible'; // 👈 仍然需要显示内容
         return;
       }
 
@@ -165,12 +165,12 @@
       }
 
       // 拖动滑块
-      sliderThumb.addEventListener('mousedown', function(e) {
+      sliderThumb.addEventListener('mousedown', function (e) {
         isDragging = true;
         e.preventDefault();
       });
 
-      document.addEventListener('mousemove', function(e) {
+      document.addEventListener('mousemove', function (e) {
         if (!isDragging) return;
         const trackRect = sliderTrack.getBoundingClientRect();
         const thumbHeight = sliderThumb.clientHeight;
@@ -182,7 +182,7 @@
       document.addEventListener('mouseup', () => isDragging = false);
 
       // 点击轨道跳转
-      sliderTrack.addEventListener('click', function(e) {
+      sliderTrack.addEventListener('click', function (e) {
         if (e.target === sliderThumb) return;
         const trackRect = sliderTrack.getBoundingClientRect();
         const thumbHeight = sliderThumb.clientHeight;
@@ -192,17 +192,15 @@
       });
 
       // 鼠标滚轮支持
-      newsContainer.addEventListener('wheel', function(e) {
+      newsContainer.addEventListener('wheel', function (e) {
         e.preventDefault();
         const delta = e.deltaY > 0 ? 30 : -30;
         updatePosition(currentPosition + delta);
       });
 
       // 移动端支持
-      let startY;
       sliderThumb.addEventListener('touchstart', e => {
         isDragging = true;
-        startY = e.touches[0].clientY;
         e.preventDefault();
       });
 
@@ -219,10 +217,10 @@
 
       // 初始化位置
       updatePosition(0);
-    }, 100); // 💡 延时100ms确保DOM加载完
+      newsContainer.style.visibility = 'visible'; // ✅ 显示内容
+    }, 100); // 可微调延迟，确保 DOM 渲染完成
   });
 </script>
-
 
 		      <br><br>
                 <h2>Research</h2>
