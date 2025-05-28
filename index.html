@@ -50,12 +50,6 @@
       <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at GalaXea AI.</li>
       <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
       <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research,Tsinghua University for manipulation research.</li>
-      <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at GalaXea AI.</li>
-      <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
-      <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research,Tsinghua University for manipulation research.</li>
-      <li><strong>[May. 2025]</strong> 🎉🎉 I became an intern at GalaXea AI.</li>
-      <li><strong>[Apr. 2025]</strong> 🎉🎉 I received transfer offers from UW, UIUC, WISC, Purdue, etc.</li>
-      <li><strong>[Jan. 2025]</strong> 🎉🎉 I joined the Institute for AI Industry Research,Tsinghua University for manipulation research.</li>
     </ul>
   </div>
 
@@ -135,150 +129,127 @@
   }
 </style>
      <script>
-  function initializeNewsScroll() {
+  document.addEventListener('DOMContentLoaded', function() {
     const newsList = document.getElementById('news-list');
     const newsContainer = document.querySelector('.news-container');
     const sliderThumb = document.getElementById('slider-thumb');
     const sliderTrack = document.querySelector('.slider-track');
-
+    
     const listHeight = newsList.scrollHeight;
     const containerHeight = newsContainer.clientHeight;
     const scrollableDistance = listHeight - containerHeight;
-
-    // 如果内容无法滚动，隐藏滑动条
+    
+    // Only show slider if content overflows
     if (scrollableDistance <= 0) {
       document.querySelector('.slider-container').style.display = 'none';
       return;
     }
-
-    // 初始化滚动
+    
+    // Initial position
     let currentPosition = 0;
     let isDragging = false;
-
+    
+    // Function to update the news list position
     function updatePosition(position) {
+      // Ensure position is within bounds
       position = Math.max(0, Math.min(position, scrollableDistance));
       currentPosition = position;
-
+      
+      // Update news list transform
       newsList.style.transform = `translateY(-${position}px)`;
-
+      
+      // Update slider thumb position
       const thumbPosition = (position / scrollableDistance) * (sliderTrack.clientHeight - sliderThumb.clientHeight);
       sliderThumb.style.top = `${thumbPosition}px`;
     }
-
-    // 鼠标拖动
-    sliderThumb.addEventListener('mousedown', e => {
+    
+    // Mouse events for dragging the slider
+    sliderThumb.addEventListener('mousedown', function(e) {
       isDragging = true;
-      e.preventDefault();
+      e.preventDefault(); // Prevent text selection
     });
-
-    document.addEventListener('mousemove', e => {
+    
+    document.addEventListener('mousemove', function(e) {
       if (!isDragging) return;
-
-      const rect = sliderTrack.getBoundingClientRect();
+      
+      const trackRect = sliderTrack.getBoundingClientRect();
       const thumbHeight = sliderThumb.clientHeight;
-      const trackHeight = rect.height;
-
-      let relativeY = e.clientY - rect.top;
+      const trackHeight = trackRect.height;
+      
+      // Calculate position relative to the track
+      let relativeY = e.clientY - trackRect.top;
       relativeY = Math.max(thumbHeight / 2, Math.min(relativeY, trackHeight - thumbHeight / 2));
-
+      
+      // Calculate the scroll position
       const scrollRatio = (relativeY - thumbHeight / 2) / (trackHeight - thumbHeight);
       const scrollPosition = scrollRatio * scrollableDistance;
-
+      
       updatePosition(scrollPosition);
     });
-
-    document.addEventListener('mouseup', () => {
+    
+    document.addEventListener('mouseup', function() {
       isDragging = false;
     });
-
-    // 点击轨道
-    sliderTrack.addEventListener('click', e => {
+    
+    // Track click to jump to position
+    sliderTrack.addEventListener('click', function(e) {
       if (e.target === sliderThumb) return;
-
-      const rect = sliderTrack.getBoundingClientRect();
+      
+      const trackRect = sliderTrack.getBoundingClientRect();
       const thumbHeight = sliderThumb.clientHeight;
-      const trackHeight = rect.height;
-
-      let relativeY = e.clientY - rect.top;
+      const trackHeight = trackRect.height;
+      
+      // Calculate position relative to the track
+      let relativeY = e.clientY - trackRect.top;
       relativeY = Math.max(thumbHeight / 2, Math.min(relativeY, trackHeight - thumbHeight / 2));
-
+      
+      // Calculate the scroll position
       const scrollRatio = (relativeY - thumbHeight / 2) / (trackHeight - thumbHeight);
       const scrollPosition = scrollRatio * scrollableDistance;
-
+      
       updatePosition(scrollPosition);
     });
-
-    // 滚轮
-    newsContainer.addEventListener('wheel', e => {
+    
+    // Mouse wheel scrolling in the news container
+    newsContainer.addEventListener('wheel', function(e) {
       e.preventDefault();
       const delta = e.deltaY > 0 ? 30 : -30;
       updatePosition(currentPosition + delta);
     });
-
-    // 触摸滑动
-    sliderThumb.addEventListener('touchstart', e => {
+    
+    // Touch events for mobile
+    let startY;
+    
+    sliderThumb.addEventListener('touchstart', function(e) {
       isDragging = true;
+      startY = e.touches[0].clientY;
       e.preventDefault();
     });
-
-    document.addEventListener('touchmove', e => {
+    
+    document.addEventListener('touchmove', function(e) {
       if (!isDragging) return;
-
-      const rect = sliderTrack.getBoundingClientRect();
+      
+      const trackRect = sliderTrack.getBoundingClientRect();
       const thumbHeight = sliderThumb.clientHeight;
-      const trackHeight = rect.height;
-
-      let relativeY = e.touches[0].clientY - rect.top;
+      const trackHeight = trackRect.height;
+      
+      // Calculate position relative to the track
+      let relativeY = e.touches[0].clientY - trackRect.top;
       relativeY = Math.max(thumbHeight / 2, Math.min(relativeY, trackHeight - thumbHeight / 2));
-
+      
+      // Calculate the scroll position
       const scrollRatio = (relativeY - thumbHeight / 2) / (trackHeight - thumbHeight);
       const scrollPosition = scrollRatio * scrollableDistance;
-
+      
       updatePosition(scrollPosition);
     });
-
-    document.addEventListener('touchend', () => {
+    
+    document.addEventListener('touchend', function() {
       isDragging = false;
     });
-
-    // 初始化位置
+    
+    // Initialize the thumb position
     updatePosition(0);
-  }
-
-  // 等待内容加载并正确渲染后再初始化
-  function waitForContentRender(maxAttempts = 10) {
-    let attempts = 0;
-
-    function check() {
-      const newsList = document.getElementById('news-list');
-      const newsContainer = document.querySelector('.news-container');
-
-      if (!newsList || !newsContainer) {
-        if (++attempts < maxAttempts) {
-          requestAnimationFrame(check);
-        }
-        return;
-      }
-
-      const listHeight = newsList.scrollHeight;
-      const containerHeight = newsContainer.clientHeight;
-
-      // 内容是否完全渲染
-      if (listHeight > containerHeight) {
-        initializeNewsScroll();
-      } else {
-        if (++attempts < maxAttempts) {
-          requestAnimationFrame(check);
-        }
-      }
-    }
-
-    requestAnimationFrame(check);
-  }
-
-  // 页面加载后执行
-  window.addEventListener('load', () => {
-    waitForContentRender();
   });
 </script>
 
